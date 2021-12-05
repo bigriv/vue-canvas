@@ -11,8 +11,6 @@
     :style="{ cursor: state.isHover ? 'grab' : '' }"
     @mouseenter="state.isHover = true"
     @mouseleave="state.isHover = false"
-    @mousedown="onGrab"
-    @mouseup="onRelease"
   />
 </template>
 
@@ -62,8 +60,6 @@ export default defineComponent({
     "update:ry",
     "update:width",
     "update:height",
-    "grab",
-    "release",
   ],
   setup(props, { emit }) {
     const state = reactive({
@@ -93,16 +89,8 @@ export default defineComponent({
       }),
       isHover: false,
     });
-    const onGrab = (event) => {
-      emit("grab", event);
-    };
-    const onRelease = (event) => {
-      emit("release"), event;
-    };
     return {
       state,
-      onGrab,
-      onRelease,
     };
   },
 });

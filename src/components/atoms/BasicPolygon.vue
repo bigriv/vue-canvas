@@ -6,8 +6,6 @@
     :style="{ cursor: state.isHover ? 'grab' : '' }"
     @mouseenter="state.isHover = true"
     @mouseleave="state.isHover = false"
-    @mousedown="onGrab"
-    @mouseup="onRelease"
   />
 </template>
 
@@ -19,7 +17,11 @@ export default defineComponent({
   props: {
     points: {
       type: Array,
-      default: () => [[0, 0], [0, 0], [0, 0]]
+      default: () => [
+        [0, 0],
+        [0, 0],
+        [0, 0],
+      ],
     },
     color: {
       type: String,
@@ -30,11 +32,7 @@ export default defineComponent({
       default: "black",
     },
   },
-  emits: [
-    "update:points",
-    "grab",
-    "release",
-  ],
+  emits: ["update:points"],
   setup(props, { emit }) {
     const state = reactive({
       points: computed({
@@ -43,16 +41,8 @@ export default defineComponent({
       }),
       isHover: false,
     });
-    const onGrab = (event) => {
-      emit("grab", event);
-    };
-    const onRelease = (event) => {
-      emit("release", event);
-    };
     return {
       state,
-      onGrab,
-      onRelease,
     };
   },
 });

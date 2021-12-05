@@ -16,6 +16,7 @@
     :y2="state.y2"
     :fill="color"
     :stroke="border"
+    stroke-dasharray="stroke-dasharray"
   />
 </template>
 

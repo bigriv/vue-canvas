@@ -8,27 +8,18 @@
     v-model:height="state.height"
     :color="type === 'end' ? 'red' : 'lightgreen'"
     :border="'black'"
-    @grab="onGrab"
-  />
-  <GrabArea
-    v-if="state.isGrab"
-    :x="state.grabableArea.x"
-    :y="state.grabableArea.y"
-    @release="onRelease"
-    @mousemove="onMouseMove"
+    @mousedown="onGrab"
   />
 </template>
 
 <script>
 import { defineComponent, reactive, computed } from "vue";
 import BasicRect from "@/components/atoms/BasicRect.vue";
-import GrabArea from "@/components/atoms/GrabArea.vue";
 
 export default defineComponent({
   name: "ConditionalDiagram",
   components: {
     BasicRect,
-    GrabArea,
   },
   props: {
     x: {
@@ -50,7 +41,7 @@ export default defineComponent({
     type: {
       type: String,
       default: "start",
-    }
+    },
   },
   emits: [
     "update:x",
@@ -58,7 +49,6 @@ export default defineComponent({
     "update:width",
     "update:height",
     "grab",
-    "release",
   ],
   setup(props, { emit }) {
     const state = reactive({
@@ -80,33 +70,13 @@ export default defineComponent({
         get: () => props.height,
         set: (newValue) => emit("update:height", newValue),
       }),
-      isGrab: false,
-      grabableArea: {
-        x: 0,
-        y: 0,
-      },
     });
-    const onMouseMove = (event) => {
-      state.grabableArea.x += event.movementX;
-      state.grabableArea.y += event.movementY;
-      state.x += event.movementX;
-      state.y += event.movementY;
-    };
     const onGrab = (event) => {
-      state.grabableArea.x = event.offsetX;
-      state.grabableArea.y = event.offsetY;
-      state.isGrab = true;
       emit("grab", event);
-    };
-    const onRelease = (event) => {
-      state.isGrab = false;
-      emit("release", event);
     };
     return {
       state,
-      onMouseMove,
       onGrab,
-      onRelease,
     };
   },
 });

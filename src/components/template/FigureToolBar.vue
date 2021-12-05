@@ -2,7 +2,7 @@
   <v-container class="mt-10 mb-10">
     <v-row class="d-flex justify-center">
       <v-col v-for="option in buttonOptions" :key="option" class="ml-2 mr-2">
-        <v-card elevation="10" class="pt-2 pb-2 rounded-lg" width="100">
+        <v-card elevation="10" class="pa-2 rounded-lg" min-width="100">
           <v-btn
             text
             width="100%"
@@ -26,16 +26,12 @@ export default defineComponent({
   setup(props, { emit }) {
     const buttonOptions = [
       {
-        label: "○",
-        object: "circle",
+        label: "|",
+        object: "vertical_line",
       },
       {
-        label: "□",
-        object: "rect",
-      },
-      {
-        label: "\\",
-        object: "line",
+        label: "―",
+        object: "horizonal_line",
       },
       {
         label: "IF",
@@ -52,7 +48,15 @@ export default defineComponent({
       {
         label: "END",
         object: "end"
-      }
+      },
+      {
+        label: "LOOP_START",
+        object: "loop_start"
+      },
+      {
+        label: "LOOP_END",
+        object: "loop_end"
+      },
     ];
     const onClick = (object) => {
       emit("click", object);
