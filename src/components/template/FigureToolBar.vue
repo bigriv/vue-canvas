@@ -1,6 +1,7 @@
 <template>
   <v-container class="mt-10 mb-10">
-    <v-row class="d-flex justify-center">
+    <v-card class="d-inline-flex" max-width="1000">
+    <v-row class="d-flex justify-center overflow-x-auto pa-10">
       <v-col v-for="option in buttonOptions" :key="option" class="ml-2 mr-2">
         <v-card elevation="10" class="pa-2 rounded-lg" min-width="100">
           <v-btn
@@ -14,6 +15,7 @@
         </v-card>
       </v-col>
     </v-row>
+    </v-card>
   </v-container>
 </template>
 <script>
@@ -38,6 +40,10 @@ export default defineComponent({
         object: "if"
       },
       {
+        label: "PROCESS",
+        object: "process"
+      },
+      {
         label: "FUNCTION",
         object: "function"
       },
@@ -57,6 +63,14 @@ export default defineComponent({
         label: "LOOP_END",
         object: "loop_end"
       },
+      {
+        label: "ASSIGN",
+        object: "assign"
+      },
+      {
+        label: 'TEXT',
+        object: 'text'
+      }
     ];
     const onClick = (object) => {
       emit("click", object);

@@ -5,8 +5,7 @@
     fill="white"
     @mouseenter="state.isHover = true"
     @mouseleave="state.isHover = false"
-    @mousedown="onGrab"
-    @mouseup="onRelease"
+    @mousedown="onMousedown"
     :style="{ cursor: state.isHover ? 'grab' : '' }"
   />
   <line
@@ -16,12 +15,11 @@
     :y2="state.y2"
     :fill="color"
     :stroke="border"
-    stroke-dasharray="stroke-dasharray"
   />
 </template>
 
 <script>
-import { defineComponent, reactive, computed, watch, onMounted } from "vue";
+import { defineComponent, reactive, computed } from "vue";
 
 export default defineComponent({
   name: "BasicLine",
@@ -57,7 +55,7 @@ export default defineComponent({
     "update:x2",
     "update:y2",
     "grab",
-    "release",
+    "mousedown",
   ],
   setup(props, { emit }) {
     const state = reactive({
@@ -78,54 +76,28 @@ export default defineComponent({
         set: (newValue) => emit("update:y2", newValue),
       }),
       isHover: false,
-      grabableArea: [
-        [0, 0],
-        [0, 0],
-        [0, 0],
-        [0, 0],
-      ],
+      grabableArea: computed(() =>
+        calcGrabableArea(props.x1, props.y1, props.x2, props.y2)
+      ),
     });
     const distance = 10;
-    const onGrab = (event) => {
-      emit("grab", event);
-    };
-    const onRelease = (event) => {
-      emit("release", event);
-    };
-    const calcGrabableArea = () => {
-      const deg = Math.atan2(state.y2 - state.y1, state.x2 - state.x1)
-      const sinD = Math.sin(deg);
-      const cosD = Math.cos(deg);
-      state.grabableArea = [
-        [
-          state.x1 - distance * (sinD + cosD),
-          state.y1 + distance * (sinD - cosD),
-        ],
-        [
-          state.x1 + distance * (sinD - cosD),
-          state.y1 - distance * (sinD + cosD),
-        ],
-        [
-          state.x2 + distance * (sinD + cosD),
-          state.y2 - distance * (sinD - cosD),
-        ],
-        [
-          state.x2 - distance * (sinD - cosD),
-          state.y2 + distance * (sinD + cosD),
-        ],
+    const calcGrabableArea = (x1, y1, x2, y2) => {
+      const rad = Math.atan2(y2 - y1, x2 - x1);
+      const sinD = Math.sin(rad);
+      const cosD = Math.cos(rad);
+      return [
+        [x1 - distance * (sinD + cosD), y1 - distance * (sinD - cosD)],
+        [x1 + distance * (sinD - cosD), y1 - distance * (sinD + cosD)],
+        [x2 + distance * (sinD + cosD), y2 + distance * (sinD - cosD)],
+        [x2 - distance * (sinD - cosD), y2 + distance * (sinD + cosD)],
       ];
-    }
-    onMounted(() => {
-      calcGrabableArea()
-    });
-    watch(
-      () => [state.x1, state.y1, state.x2, state.y2],
-      () => calcGrabableArea()
-    );
+    };
+    const onMousedown = (event) => {
+      emit("mousedown", event);
+    };
     return {
       state,
-      onGrab,
-      onRelease,
+      onMousedown,
     };
   },
 });

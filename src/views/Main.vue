@@ -1,8 +1,8 @@
 <template>
-  <div class="mb-10">
-  <FigureToolBar @click="addDiagram" />
-  <Canvas :figures="state.figures" />
-  <!-- <GridCanvas /> -->
+  <div class="mb-10" width="100%">
+    <FigureToolBar @click="addDiagram" />
+    <Canvas :figures="state.figures" />
+    <!-- <GridCanvas :figures="state.figures" /> -->
   </div>
 </template>
 <script>
@@ -32,27 +32,28 @@ export default defineComponent({
 
       switch (diagram) {
         case "vertical_line":
-          newFigure.x1 = 0;
-          newFigure.y1 = 0;
-          newFigure.x2 = 100;
-          newFigure.y2 = 100;
-          break;
         case "horizonal_line":
-          newFigure.x1 = 0;
-          newFigure.y1 = 0;
-          newFigure.x2 = 100;
-          newFigure.y2 = 100;
+          newFigure.x = 10;
+          newFigure.y = 10;
+          newFigure.length = 100;
           break;
         case "if":
+        case "process":
         case "function":
         case "start":
         case "end":
         case "loop_start":
         case "loop_end":
+        case "assign":
           newFigure.x = 0;
           newFigure.y = 0;
           newFigure.width = 100;
           newFigure.height = 40;
+          break;
+        case "text":
+          newFigure.x = 100;
+          newFigure.y = 100;
+          newFigure.text = 'aaaa';
           break;
       }
       state.figures.push(newFigure);

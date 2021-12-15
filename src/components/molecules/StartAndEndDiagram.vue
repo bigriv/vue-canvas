@@ -41,15 +41,12 @@ export default defineComponent({
     type: {
       type: String,
       default: "start",
+      validator(val) {
+        return ["start", "end"].includes(val);
+      },
     },
   },
-  emits: [
-    "update:x",
-    "update:y",
-    "update:width",
-    "update:height",
-    "grab",
-  ],
+  emits: ["update:x", "update:y", "update:width", "update:height", "grab"],
   setup(props, { emit }) {
     const state = reactive({
       x: computed({

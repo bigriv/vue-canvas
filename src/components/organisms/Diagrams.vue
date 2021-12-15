@@ -10,14 +10,15 @@
       :border="figure.border"
       @grab="onGrab($event, figure)"
     />
-    <FunctionDiagram
-      v-else-if="figure.type === 'function'"
+    <ProcessDiagram
+      v-else-if="figure.type === 'process' || figure.type === 'function'"
       v-model:x="figure.x"
       v-model:y="figure.y"
       v-model:width="figure.width"
       v-model:height="figure.height"
       :color="figure.color"
       :border="figure.border"
+      :type="figure.type"
       @grab="onGrab($event, figure)"
     />
     <StartAndEndDiagram
@@ -38,6 +39,24 @@
       :type="figure.type"
       @grab="onGrab($event, figure)"
     />
+    <AssignmentDiagram
+      v-else-if="figure.type === 'assign'"
+      v-model:x="figure.x"
+      v-model:y="figure.y"
+      v-model:width="figure.width"
+      v-model:height="figure.height"
+      @grab="onGrab($event, figure)"
+    />
+    <ConnectLine
+      v-else-if="
+        figure.type === 'vertical_line' || figure.type === 'horizonal_line'
+      "
+      v-model:x="figure.x"
+      v-model:y="figure.y"
+      v-model:length="figure.length"
+      :type="figure.type"
+      @grab="onGrab($event, figure)"
+    />
   </template>
   <GrabArea
     v-if="state.isGrab"
@@ -51,18 +70,22 @@
 <script>
 import { defineComponent, reactive } from "vue";
 import ConditionalDiagram from "@/components/molecules/ConditionalDiagram.vue";
-import FunctionDiagram from "@/components/molecules/FunctionDiagram.vue";
+import ProcessDiagram from "@/components/molecules/ProcessDiagram.vue";
 import StartAndEndDiagram from "@/components/molecules/StartAndEndDiagram.vue";
 import LoopDiagram from "@/components/molecules/LoopDiagram.vue";
+import AssignmentDiagram from "@/components/molecules/AssignmentDiagram.vue";
+import ConnectLine from "@/components/molecules/ConnectLine.vue";
 import GrabArea from "@/components/atoms/GrabArea.vue";
 
 export default defineComponent({
   name: "Diagrams",
   components: {
     ConditionalDiagram,
-    FunctionDiagram,
+    ProcessDiagram,
     StartAndEndDiagram,
     LoopDiagram,
+    AssignmentDiagram,
+    ConnectLine,
     GrabArea,
   },
   props: {
