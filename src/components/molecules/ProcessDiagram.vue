@@ -9,6 +9,7 @@
     @mousedown="onGrab"
   />
   <BasicRect
+    v-if="type === 'function'"
     v-model:x="state.inline.x"
     v-model:y="state.inline.y"
     v-model:width="state.inline.width"
@@ -53,14 +54,15 @@ export default defineComponent({
       type: String,
       default: "black",
     },
+    type: {
+      type: String,
+      default: "process",
+      validator(val) {
+        return ["process", "function"].includes(val);
+      },
+    }
   },
-  emits: [
-    "update:x",
-    "update:y",
-    "update:width",
-    "update:height",
-    "grab",
-  ],
+  emits: ["update:x", "update:y", "update:width", "update:height", "grab"],
   setup(props, { emit }) {
     const state = reactive({
       outline: {
