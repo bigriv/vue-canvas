@@ -45,16 +45,22 @@ export default defineComponent({
         case "loop_start":
         case "loop_end":
         case "assign":
+          newFigure.text = "";
           newFigure.x = 0;
           newFigure.y = 0;
           newFigure.width = 100;
           newFigure.height = 40;
           break;
-        case "text":
-          newFigure.x = 100;
-          newFigure.y = 100;
-          newFigure.text = 'aaaa';
+      }
+      switch (diagram) {
+        case "start":
+          newFigure.text = "開始";
           break;
+        case "end":
+          newFigure.text = "終了";
+          break;
+        default:
+          newFigure.text = "式";
       }
       state.figures.push(newFigure);
     };

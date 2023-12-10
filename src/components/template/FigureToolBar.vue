@@ -67,10 +67,6 @@ export default defineComponent({
         label: "ASSIGN",
         object: "assign"
       },
-      {
-        label: 'TEXT',
-        object: 'text'
-      }
     ];
     const onClick = (object) => {
       emit("click", object);

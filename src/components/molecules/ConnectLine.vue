@@ -8,16 +8,19 @@
     :border="border"
     @mousedown="onGrab"
   />
+  <ConnectPoints v-model:points="points" @grab="onGrabPoint" />
 </template>
 
 <script>
 import { defineComponent, reactive, computed } from "vue";
 import BasicLine from "@/components/atoms/BasicLine.vue";
+import ConnectPoints from "@/components/molecules/ConnectPoints.vue";
 
 export default defineComponent({
   name: "ConditionalDiagram",
   components: {
     BasicLine,
+    ConnectPoints,
   },
   props: {
     x: {
@@ -59,14 +62,23 @@ export default defineComponent({
         get: () => props.y,
         set: (newValue) => emit("update:y", newValue),
       }),
-      x2: computed(() => props.type === 'horizonal_line' ? props.x + props.length : props.x),
-      y2: computed(() => props.type === 'vertical_line' ? props.y + props.length : props.y),
+      x2: computed(() =>
+        props.type === "horizonal_line" ? props.x + props.length : props.x
+      ),
+      y2: computed(() =>
+        props.type === "vertical_line" ? props.y + props.length : props.y
+      ),
     });
+    const points = computed(() => [
+      { x: state.x1, y: state.y1 },
+      { x: state.x2, y: state.y2 },
+    ]);
     const onGrab = (event) => {
       emit("grab", event);
     };
     return {
       state,
+      points,
       onGrab,
     };
   },

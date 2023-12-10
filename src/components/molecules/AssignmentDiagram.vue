@@ -5,9 +5,6 @@
     :border="border"
     @mousedown="onGrab"
   />
-  <text :x="state.x + state.width / 8" :y="state.y + state.height / 2" :textLength="state.width" lengthAdjust="spacingAndGlyphs">
-    {{state.text}}
-  </text>
 </template>
 
 <script>

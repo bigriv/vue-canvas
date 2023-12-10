@@ -57,6 +57,13 @@
       :type="figure.type"
       @grab="onGrab($event, figure)"
     />
+
+    <BasicText
+      v-if="figure.type !== 'vertical_line' && figure.type !== 'horizonal_line'"
+      v-model:text="figure.text"
+      :x="figure.x + figure.width / 4"
+      :y="figure.y + figure.height / 2"
+    />
   </template>
   <GrabArea
     v-if="state.isGrab"
@@ -76,6 +83,7 @@ import LoopDiagram from "@/components/molecules/LoopDiagram.vue";
 import AssignmentDiagram from "@/components/molecules/AssignmentDiagram.vue";
 import ConnectLine from "@/components/molecules/ConnectLine.vue";
 import GrabArea from "@/components/atoms/GrabArea.vue";
+import BasicText from "@/components/atoms/BasicText.vue";
 
 export default defineComponent({
   name: "Diagrams",
@@ -87,6 +95,7 @@ export default defineComponent({
     AssignmentDiagram,
     ConnectLine,
     GrabArea,
+    BasicText,
   },
   props: {
     figures: {
